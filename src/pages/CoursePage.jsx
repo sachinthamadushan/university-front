@@ -1,0 +1,4 @@
+
+export const CoursePage = () => {
+    return <h1 className="text-3xl font-semibold text-center p-5">Course Page</h1>
+}
