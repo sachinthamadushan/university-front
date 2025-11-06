@@ -8,7 +8,7 @@ export const StudentForm = ({ onStudentAdded }) => {
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [dob, setDob] = useState("");
-  const [msg, setMsg] = useState("");
+  
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSaveStudent = async (e) => {
