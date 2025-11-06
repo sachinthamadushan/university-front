@@ -8,6 +8,7 @@ import { HomePage } from './pages/HomePage'
 import { StudentPage } from './pages/StudentPage'
 import { CoursePage } from './pages/CoursePage'
 import { EntrollmentPage } from './pages/EntrollmentPage'
+import { Toaster } from 'react-hot-toast'
 
 function App() {
 
@@ -16,6 +17,20 @@ function App() {
       <header>
         <Navbar/>
       </header>
+      <Toaster 
+        position='top-center'
+        toastOptions={
+          {
+            duration:3000,
+            style:{background:'#363636', color:'white'},
+            success:{duration:3000, theme: {
+              primary: 'green',
+              secondary: 'black',
+            }}
+          }
+
+        }
+      />
       <main className='container mx-auto p-8'>
         <Routes>
           <Route path='/' element={<HomePage/>} />
