@@ -68,7 +68,7 @@ export const StudentPage = () => {
           </thead>
           <tbody>
             {students.map((student) => (
-              <tr key={student.student_id} className="hover:bg-gray-50">
+               <tr key={student.student_id} className="hover:bg-gray-50">
                 <td
                   className="px-6 py-4 font-light
                         text-gray-700"
