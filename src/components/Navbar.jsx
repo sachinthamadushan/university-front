@@ -1,21 +1,42 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 export const Navbar = () => {
+   const [userType,setUserType] = useState("");
+
+  useEffect( ()=>{
+    setUserType('Admin');
+  });
+
   return (
     <nav className="bg-sky-500 p-4 shadow">
       <div className="container mx-auto flex justify-between items-center">
         <Link to="/" className="tex-xl font-bold text-white">University App</Link>
         <div className="space-x-4">
-          <Link to="/students" className="text-white">
+          { userType === 'Admin' ? (
+            <div className="space-x-4">
+              <Link to="/students" className="text-white">
             Students
-          </Link>
-          <Link to="/courses" className="text-white">
+            </Link>
+            <Link to="/courses" className="text-white">
             Courses
-          </Link>
-          <Link to="/enroll" className="text-white">
+            </Link>
+            <Link to="/enroll" className="text-white">
             Enroll
-          </Link>
+            </Link>
+            </div>
+          ) : (
+            <div className="space-x-4">
+              <Link to="/students" className="text-white">
+            Students
+            </Link>
+            <Link to="/courses" className="text-white">
+            Courses
+            </Link>
+            </div>
+          )
+          }
+          
         </div>
       </div>
     </nav>

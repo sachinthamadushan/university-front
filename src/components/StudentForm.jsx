@@ -8,6 +8,14 @@ export const StudentForm = ({ onStudentAdded }) => {
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [dob, setDob] = useState("");
+
+  // const [studentFormData,setStudentFormData] = useState({
+  //   firstName:'',
+  //   lastName:'',
+  //   email:'',
+  //   dob:''
+  // });
+
   
   const [isSubmitting, setIsSubmitting] = useState(false);
 

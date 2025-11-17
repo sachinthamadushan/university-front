@@ -4,7 +4,6 @@ import { FaEdit, FaTrash } from "react-icons/fa";
 import { useCallback, useEffect, useState } from "react";
 import { courseAPI } from "../services/api";
 import toast from "react-hot-toast";
-import { tr } from "date-fns/locale";
 
 export const CoursePage = () => {
   const [courses, setCourses] = useState([]);
