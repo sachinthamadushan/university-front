@@ -3,29 +3,47 @@ import { StudentForm } from "../components/StudentForm";
 import { FaEdit } from "react-icons/fa";
 import { FaTrash } from "react-icons/fa6";
 import { useCallback, useEffect, useState } from "react";
-import axios from "axios";
 import { format } from "date-fns";
+import { studentAPI } from "../services/api";
+import toast from "react-hot-toast";
 
 export const StudentPage = () => {
   const [students, setStudents] = useState([]);
+  const [hasStudents,setHasStudents] = useState(false);
 
   const fetchStudents = useCallback(async () => {
     try {
-      const request = axios.create({
-        baseURL: "http://localhost:3000/api/v1/students",
-        headers: { "Content-Type": "application/json" },
-      });
-      await request.get("/all").then((response) => {
+      await studentAPI.getAllStudent()
+      .then((response) => {
+      if (response.data.data) {
         setStudents(response.data.data);
+        setHasStudents(true);
+      }
       });
     } catch (error) {
       console.error("Failed to fetch students", error);
     }
-  }, []);
+  },[]);
 
   useEffect(() => {
     fetchStudents();
   }, [fetchStudents]);
+
+  const handleDeleteStudent = async (studentId) => {
+    if (window.confirm("Are you want to delete th student?")) {
+      const deletePromise = studentAPI.deleteStudent(studentId);
+      toast
+        .promise(deletePromise, {
+          loading: "Deleting student...",
+          success: <b>Student Deleted Succesfully!</b>,
+          error: <b>Failed delete</b>,
+        })
+        .then(
+          () => fetchStudents()
+        )
+        .catch((error) => console.error("Delete faild", error));
+    }
+  };
 
   return (
     <div>
@@ -67,8 +85,10 @@ export const StudentPage = () => {
             ></th>
           </thead>
           <tbody>
-            {students.map((student) => (
-               <tr key={student.student_id} className="hover:bg-gray-50">
+            {
+            hasStudents ? (
+              students.map((student) => (
+              <tr key={student.student_id} className="hover:bg-gray-50">
                 <td
                   className="px-6 py-4 font-light
                         text-gray-700"
@@ -85,7 +105,7 @@ export const StudentPage = () => {
                   className="px-6 py-4 font-light
                         text-gray-700"
                 >
-                  {format(new Date(student.dob),'yyyy-MMM-dd')}
+                  {format(new Date(student.dob), "yyyy-MMM-dd")}
                 </td>
                 <td>
                   <div className="flex justify-center gap-4">
@@ -108,6 +128,7 @@ export const StudentPage = () => {
                     </button>
 
                     <button
+                      onClick={() => handleDeleteStudent(student.student_id)}
                       className="flex items-center border px-4 py-2
                                  border-red-500 gap-1.5
                                 rounded hover:bg-red-600 hover:shadow-sm 
@@ -127,7 +148,12 @@ export const StudentPage = () => {
                   </div>
                 </td>
               </tr>
-            ))}
+            ))
+            ) : (
+              <tr><td className="px-6 py-4 text-center
+              font-bold">No students Data</td></tr>
+            )
+            }
           </tbody>
         </table>
       </div>
