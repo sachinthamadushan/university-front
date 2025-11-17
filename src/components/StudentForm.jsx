@@ -4,17 +4,22 @@ import { studentAPI } from "../services/api";
 import toast from "react-hot-toast";
 
 export const StudentForm = ({ onStudentAdded }) => {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [dob, setDob] = useState("");
+  // const [firstName, setFirstName] = useState("");
+  // const [lastName, setLastName] = useState("");
+  // const [email, setEmail] = useState("");
+  // const [dob, setDob] = useState("");
 
-  // const [studentFormData,setStudentFormData] = useState({
-  //   firstName:'',
-  //   lastName:'',
-  //   email:'',
-  //   dob:''
-  // });
+  const [studentFormData,setStudentFormData] = useState({
+    first_name:'',
+    last_name:'',
+    email:'',
+    dob:''
+  });
+
+  const applyFormChanges = (e) => {
+      const {name, value} = e.target
+      setStudentFormData(prev => ({...prev, [name]:value}));
+  }
 
   
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -23,13 +28,7 @@ export const StudentForm = ({ onStudentAdded }) => {
     e.preventDefault();
     setIsSubmitting(true);
     try {
-      const student = {
-        first_name: firstName,
-        last_name: lastName,
-        email: email,
-        dob: dob,
-      };
-      const savePromise = studentAPI.createStudent(student);
+      const savePromise = studentAPI.createStudent(studentFormData);
       toast
         .promise(savePromise, {
           loading: "Student is saving...",
@@ -43,10 +42,7 @@ export const StudentForm = ({ onStudentAdded }) => {
         })
         .finally(() => {
           setIsSubmitting(false);
-          setFirstName("");
-          setLastName("");
-          setEmail("");
-          setDob("");
+          
         });
     } catch (error) {
       console.error("Failed to save student", error);
@@ -70,32 +66,36 @@ export const StudentForm = ({ onStudentAdded }) => {
           placeholder="First Name"
           className="p-2 border rounded"
           required
-          onChange={(e) => setFirstName(e.target.value)}
-          value={firstName}
+          onChange={applyFormChanges}
+          name="first_name"
+          value={studentFormData.first_name}
         />
         <input
           type="text"
           placeholder="Last Name"
           className="p-2 border rounded"
           required
-          onChange={(e) => setLastName(e.target.value)}
-          value={lastName}
+          onChange={applyFormChanges}
+          name="last_name"
+          value={studentFormData.last_name}
         />
         <input
           type="email"
           placeholder="Email"
           className="p-2 border rounded"
           required
-          onChange={(e) => setEmail(e.target.value)}
-          value={email}
+          onChange={applyFormChanges}
+          name="email"
+          value={studentFormData.email}
         />
         <input
           type="date"
           placeholder="Email"
           className="p-2 border rounded"
           required
-          onChange={(e) => setDob(e.target.value)}
-          value={dob}
+          onChange={applyFormChanges}
+          name="dob"
+          value={studentFormData.dob}
         />
       </div>
       <button
